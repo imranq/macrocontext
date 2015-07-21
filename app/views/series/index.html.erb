@@ -1,32 +1,25 @@
-<p id="notice"><%= notice %></p>
+<%= form_tag series_path, :id => "series_search", :method => 'get' do %>
+  <p>
+    <%= text_field_tag :search, params[:search], :class => "form-control", :placeholder => "Search for a data series..." %>
+  </p>
+<% end %>
 
-<h1>Listing Series</h1>
+<div class="series">
+<%= render 'series' %>
+</div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Series</th>
-      <th>Source</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
 
-  <tbody>
-    <% @series.each do |series| %>
-      <tr>
-        <td><%= series.title %></td>
-        <td><%= series.series_id %></td>
-        <td><%= series.source %></td>
-        <div><%= line_chart SeriesDatum.where(:series_id => series.series_id, :date => 10.year.ago..Time.now).group_by_year(:date).average(:value) %></div>
-        <td><%= link_to 'Show', series %></td>
-        <td><%= link_to 'Edit', edit_series_path(series) %></td>
-        <td><%= link_to 'Destroy', series, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<script>
+     $("#series_search input").keyup(function() {
+      $.get($("#series_search").attr("action"), $("#series_search").serialize(), null, "script");
+      return false;
+    });
+</script>
 
-<br>
+<style>
+#series_search {
+  margin-bottom: 10px;
 
-<%= link_to 'New Series', new_series_path %>
+}
+
+</style>

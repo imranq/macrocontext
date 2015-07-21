@@ -1,0 +1,22 @@
+<% @series.each do |entry| %>
+	<div class="problem">
+		<%= link_to series_path(entry) do %>
+			<div class="title"><%= entry.title %> </div>
+		<% end %>
+		<div class="body"><%= truncate(entry.description, length: 300) %> </div>
+		<div class="sparkchart"><%= line_chart SeriesDatum.where(:series_id => series.series_id, :date => 10.year.ago..Time.now).group_by_year(:date).average(:value) %></div>
+		<%= displayTags(entry) %>
+
+
+		<% if session[:user_admin] %>
+		
+		<br/>
+		
+		<div class="edit_problem">
+			<%= button_to "Edit", edit_series_path(entry), :class => "edit btn btn-warning", method: :get, :style => "display: inline-block;"  %>
+			<%= button_to "Delete", series_path(entry), method: :delete, :class => "delete btn btn-danger", :style => "display: inline-block;" %>
+		</div>
+		
+		<% end %>
+	</div>
+<% end %>
