@@ -4,13 +4,19 @@ class SeriesController < ApplicationController
   # GET /series
   # GET /series.json
   def index
-    @series = Series.all
+    if params[:search]
+       @series = (Series.search(params[:search])) #+Problem.tagged_with(params[:search])).uniq
+    elsif params[:tag]
+       @series = Series.tagged_with(params[:tag])
+    else
+       @series = Series.all.order('created_at DESC')
+    end
   end
 
   # GET /series/1
   # GET /series/1.json
   def show
-    @series = Series.find(series_params)
+    @series = Series.find(params[:id])
   end
 
   # GET /series/new
@@ -70,6 +76,6 @@ class SeriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def series_params
-      params.require(:series).permit(:title, :series_id, :source)
+      params.require(:series).permit(:title, :series_id, :source, :series_search, :search)
     end
 end

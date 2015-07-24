@@ -13,9 +13,6 @@
 
 ActiveRecord::Schema.define(version: 20150721070106) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
   create_table "series", force: :cascade do |t|
     t.text     "title"
     t.text     "series_id"

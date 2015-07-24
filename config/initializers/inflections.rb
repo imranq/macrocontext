@@ -14,3 +14,9 @@
 # ActiveSupport::Inflector.inflections(:en) do |inflect|
 #   inflect.acronym 'RESTful'
 # end
+
+# module ActiveSupport
+#  Inflector.inflections do |inflect|
+# 	inflect.irregular('series', 'seriess')
+#  end
+# end

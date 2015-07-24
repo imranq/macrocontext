@@ -9,7 +9,7 @@
 # need to normalize periodicity and a way to map changes from api level to server level
 
 def initialize_fred_data
-	init_series = ["gnpa"]
+	init_series = [	"cpiaucsl","cpiappsl","cpf3m","cp","compout","ccsa","ccfc","cbi","businv","borrow","bopxrt","bopxgs","bopmit","bopmgs","bopio","bopi","bopgstb","bopg","boperr","bopcat","bopbsv","bopbm","bopbii","bopbgs","bopbca","awhi"]
 
 
 	#Data.delete.all
@@ -18,19 +18,19 @@ def initialize_fred_data
 		series_info = fred.series(nil, :series_id => sid).seriess.series
 		
 		#create series unless its already in the database (unlikely since this is a seed, but you never know)
-		if !Series.find(:series_id => sid).blank?
+		#if !Series.find(:series_id => sid).blank?
 			Series.create!(:series_id => sid, :title => series_info.title, :source => "FRED", :periodicity => series_info.frequency)
 			
 			observations = fred.series('observations', :series_id => sid).observations.observation
 
 			observations.each do |entry|
 				date = DateTime.parse(entry.date)
-				if SeriesDatum.find(:series_id => sid, :date => date).blank?
-					newdata = SeriesDatum.new(:series_id => sid, :date => date, :value => entry.value)
-					newdata.save
-				end
+				#if SeriesDatum.find(:series_id => sid, :date => date).blank?
+				newdata = SeriesDatum.new(:series_id => sid, :date => date, :value => entry.value)
+				newdata.save
+				#end
 			end
-		end
+		#end
 	end
 end
 
